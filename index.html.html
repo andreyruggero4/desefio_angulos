@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Desafio dos Ângulos: Mundo Real</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--soft:#f1f5f9;--brand:#4f46e5;--ok:#047857;--okbg:#d1fae5;--bad:#be123c;--badbg:#ffe4e6;--warn:#b45309;--warnbg:#fef3c7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--muted:#94a3b8;--line:#334155;--soft:#0f172a;--brand:#818cf8;--ok:#6ee7b7;--okbg:#064e3b;--bad:#fda4af;--badbg:#4c0519;--warn:#fcd34d;--warnbg:#451a03}}
+:root[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--muted:#94a3b8;--line:#334155;--soft:#0f172a;--brand:#818cf8;--ok:#6ee7b7;--okbg:#064e3b;--bad:#fda4af;--badbg:#4c0519;--warn:#fcd34d;--warnbg:#451a03}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.shell{width:100%;max-width:720px;background:var(--card);border-radius:28px;box-shadow:0 20px 50px -20px rgba(30,41,59,.35);border:1px solid var(--line);overflow:hidden}
+.view{animation:rise .45s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes float{50%{transform:translateY(-10px)}}
+.hero{position:relative;overflow:hidden;color:#fff;text-align:center;padding:48px 24px 40px;background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#0ea5e9)}
+.hero svg.deco{position:absolute;inset:0;width:100%;height:100%;opacity:.18;pointer-events:none}
+.hero>*{position:relative}
+.logo{font-size:64px;display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:28px;padding:10px 22px;animation:float 3.5s ease-in-out infinite}
+.hero h1{margin:18px 0 6px;font-size:clamp(30px,6vw,46px);font-weight:900;line-height:1.1}
+.hero h1 small{display:block;font-size:.55em;font-weight:800;color:#a7f3d0;margin-top:6px}
+.hero p{max-width:460px;margin:12px auto 0;font-weight:700;opacity:.92;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:22px 0 28px}
+.chips span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:6px 14px;border-radius:99px;font-size:13px;font-weight:800}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:0}
+.btn{padding:14px 28px;border-radius:14px;font-weight:900;font-size:17px;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:none}
+.btn.main{background:#fff;color:#4338ca;box-shadow:0 8px 20px -6px rgba(0,0,0,.35)}
+.btn.ghost{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4)}
+.btn.brand{background:var(--brand);color:#fff;box-shadow:0 8px 18px -8px var(--brand)}
+.btn.dark{background:var(--ink);color:var(--card);width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.pad{padding:22px}
+.top{display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid var(--line)}
+.top b{font-weight:900;white-space:nowrap;font-size:14px;color:var(--muted)}
+.bar{flex:1;height:10px;background:var(--soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4f46e5,#0ea5e9);border-radius:99px;transition:width .5s}
+.mhead{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.badge{font-size:28px;background:var(--soft);border-radius:16px;width:54px;height:54px;display:grid;place-items:center;flex:none}
+.mhead h2{margin:0;font-size:21px;font-weight:900}
+.mhead small{color:var(--brand);font-weight:900;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.story{font-size:18px;font-weight:700;line-height:1.6;margin:0 0 14px}
+.diagram{display:flex;justify-content:center;background:var(--soft);border-radius:18px;padding:10px;margin-bottom:16px}
+.diagram svg{width:100%;max-width:260px;height:auto}
+.seg{stroke:var(--card);stroke-width:2}
+.k0{fill:#6366f1}.k1{fill:#0ea5e9}.k2{fill:#14b8a6}.u{fill:#f59e0b}
+.diagram text{font-weight:900;font-size:13px;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}
+.ans{display:flex;gap:10px;align-items:stretch}
+.ans label{flex:1;display:flex;align-items:center;gap:8px;background:var(--soft);border:2px solid var(--line);border-radius:14px;padding:0 16px;transition:border .2s}
+.ans label:focus-within{border-color:var(--brand)}
+.ans input{width:100%;border:0;background:transparent;color:var(--ink);font:inherit;font-size:26px;font-weight:900;padding:12px 0;outline:0;min-width:0}
+.ans span{font-size:26px;font-weight:900;color:var(--muted)}
+.note{margin-top:14px;padding:12px 16px;border-radius:14px;font-weight:800;line-height:1.5}
+.note.bad{background:var(--badbg);color:var(--bad);animation:shake .4s}
+.note.warn{background:var(--warnbg);color:var(--warn)}
+.exp{margin-top:18px;border:2px solid var(--line);border-radius:20px;overflow:hidden}
+.banner{padding:14px 18px;font-weight:900;font-size:18px}
+.banner.first,.banner.help{background:var(--okbg);color:var(--ok)}
+.banner.revealed{background:var(--warnbg);color:var(--warn)}
+.exp .body{padding:16px 18px}
+.steps{list-style:none;counter-reset:s;margin:0;padding:0}
+.steps li{counter-increment:s;position:relative;padding:4px 0 12px 42px;font-weight:700;line-height:1.55;opacity:0;animation:rise .5s ease forwards}
+.steps li:before{content:counter(s);position:absolute;left:0;top:2px;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;font-weight:900;font-size:14px;display:grid;place-items:center}
+.steps li:last-child{padding-bottom:4px}
+.key{margin-top:12px;background:var(--soft);border-left:4px solid var(--brand);border-radius:10px;padding:10px 14px;font-weight:800;font-size:15px}
+.exp .btn{margin-top:4px}
+.score{text-align:center;padding:36px 22px 10px}
+.score .big{font-size:64px;font-weight:900;color:var(--brand);line-height:1}
+.score h2{margin:8px 0 4px;font-size:26px;font-weight:900}
+.score p{margin:0;color:var(--muted);font-weight:700}
+h3.sec{margin:22px 0 10px;font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:900}
+.rev{background:var(--warnbg);color:var(--warn);border-radius:14px;padding:12px 18px;font-weight:800;line-height:1.7}
+.rev.good{background:var(--okbg);color:var(--ok)}
+details{border:1px solid var(--line);border-radius:16px;margin-bottom:8px;background:var(--card)}
+summary{cursor:pointer;padding:12px 16px;font-weight:800;display:flex;gap:10px;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary em{margin-left:auto;font-style:normal;font-weight:900;color:var(--brand);white-space:nowrap}
+details .body{padding:4px 16px 14px}
+details .steps li{opacity:1;animation:none}
+.credit{margin-top:22px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--muted);text-align:center}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}
+.sheet{background:var(--card);max-width:620px;width:100%;max-height:90vh;overflow:auto;border-radius:24px;padding:26px}
+.sheet h2{margin:0 0 4px;font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:16px 0 20px}
+.grid div{background:var(--soft);border-radius:14px;padding:12px 14px;font-weight:700;font-size:14px;line-height:1.45}
+.grid b{display:block;font-weight:900;font-size:15px;color:var(--brand)}
+</style>
+</head>
+<body>
+<main class="shell">
+
+<section id="menu" class="view">
+  <div class="hero">
+    <svg class="deco" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#fff" stroke-width="3"><path d="M40 260h140M40 260l100-100M70 260a30 30 0 0 0-9-21"/><path d="M260 80h120M260 80l86 50M290 80a30 30 0 0 1 8 18"/><circle cx="330" cy="230" r="46"/><path d="M330 230l46-0M330 230l32-32"/></svg>
+    <div class="logo">📐</div>
+    <h1>Desafio dos Ângulos<small>Mundo Real</small></h1>
+    <p>Resolva situações reais de robótica, Minecraft, impressão 3D e muito mais usando a matemática dos ângulos.</p>
+    <div class="chips"><span>🎯 10 missões</span><span>🎲 Números novos a cada partida</span><span>🧠 Explicação passo a passo</span></div>
+    <div class="row">
+      <button class="btn main" onclick="startGame()">▶ Iniciar desafio</button>
+      <button class="btn ghost" onclick="toggleModal(true)">📖 Como jogar</button>
+    </div>
+  </div>
+</section>
+
+<section id="play" hidden>
+  <div class="top"><b id="counter">Missão 1 de 10</b><div class="bar"><i id="prog"></i></div></div>
+  <div class="pad view" id="mission">
+    <div class="mhead"><div class="badge" id="emoji"></div><div><small>Situação real</small><h2 id="mtitle"></h2></div></div>
+    <p class="story" id="story"></p>
+    <div class="diagram" id="diag"></div>
+    <div class="ans">
+      <label><input id="inp" type="number" inputmode="numeric" placeholder="Sua resposta" autocomplete="off"><span>°</span></label>
+      <button class="btn brand" id="go" onclick="check()">Confirmar</button>
+    </div>
+    <div id="note" hidden></div>
+    <div class="exp" id="exp" hidden>
+      <div class="banner" id="banner"></div>
+      <div class="body" id="expBody"></div>
+      <div class="body" style="padding-top:0"><button class="btn dark" id="next" onclick="nextMission()"></button></div>
+    </div>
+  </div>
+</section>
+
+<section id="end" class="view" hidden>
+  <div class="score">
+    <div class="big" id="bigScore"></div>
+    <h2 id="rank"></h2>
+    <p id="rankSub"></p>
+  </div>
+  <div class="pad">
+    <h3 class="sec">Conceitos para revisar</h3>
+    <div class="rev" id="review"></div>
+    <h3 class="sec">Reveja o raciocínio de cada missão</h3>
+    <div id="log"></div>
+    <div class="row" style="margin-top:20px"><button class="btn brand" onclick="startGame()">🔄 Jogar novamente</button></div>
+  </div>
+</section>
+</main>
+
+<div class="credit">Desenvolvido por Andrey Farias Ruggero</div>
+
+<div class="modal" id="modal" hidden onclick="if(event.target===this)toggleModal(false)">
+  <div class="sheet">
+    <h2>📖 Manual de ângulos</h2>
+    <p style="color:var(--muted);font-weight:700;margin:0">Relembre antes de resolver os problemas:</p>
+    <div class="grid">
+      <div><b>Agudo</b>Menos de 90°.</div>
+      <div><b>Reto</b>Exatamente 90° (canto de um quadrado).</div>
+      <div><b>Obtuso</b>Mais de 90° e menos de 180°.</div>
+      <div><b>Raso</b>Exatamente 180° (uma linha reta).</div>
+      <div><b>Complementares</b>Juntos formam 90°.</div>
+      <div><b>Suplementares</b>Juntos formam 180°.</div>
+      <div><b>Volta completa</b>Um giro inteiro mede 360°.</div>
+      <div><b>Triângulo</b>Os três ângulos internos somam 180°.</div>
+      <div><b>Opostos pelo vértice</b>Retas que se cruzam formam ângulos opostos iguais.</div>
+      <div><b>Dica de ouro</b>Você tem 3 tentativas. Depois, o jogo mostra a resolução passo a passo.</div>
+    </div>
+    <button class="btn brand" style="width:100%" onclick="toggleModal(false)">Entendi, vamos jogar!</button>
+  </div>
+</div>
+
+<script>
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[R(0,a.length-1)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const $=id=>document.getElementById(id);
+
+/* Missão de "o que falta": total − partes já conhecidas */
+function sub(o){
+  const known=o.parts.reduce((s,x)=>s+x,0),ans=o.total-known;
+  const kt=o.parts.length>1?`${o.parts.join('° + ')}° = <b>${known}°</b>`:`<b>${known}°</b>`;
+  return{title:o.title,emoji:o.emoji,text:o.text,answer:ans,concept:o.concept,diag:{parts:o.parts,ans},
+    steps:[`Descubra o <b>total</b>: <b>${o.total}°</b> — ${o.why}.`,
+           `Veja o que <b>já temos</b>: ${kt}.`,
+           `O que falta é o resto: ${o.total}° − ${known}° = <b>${ans}°</b>.`,
+           `Conferindo: ${known}° + ${ans}° = ${o.total}° ✔`]};
+}
+
+/* Banco de missões: cada função sorteia números (e variações de texto) novos a cada chamada */
+const TEMPLATES=[
+ ()=>{const g=R(25,75);return sub({title:'Curva do robô EV3',emoji:'🤖',text:`${pick(['Seu robô LEGO EV3','O robô da sua equipe na OBR'])} precisa fazer uma curva de 90° (ângulo reto) para seguir a linha. O giroscópio indica que ele já girou ${g}°. Quantos graus ainda faltam?`,total:90,parts:[g],why:'um ângulo reto',concept:'Ângulos complementares somam 90°.'})},
+ ()=>{const a=R(120,160),b=R(30,85);return sub({title:'Telhado no Minecraft',emoji:'⛏️',text:`No Minecraft Education, o telhado da vila exige um encontro de telhas de ${a}° (ângulo obtuso). Seu código MakeCode já posicionou os blocos em ${b}°. Quantos graus faltam?`,total:a,parts:[b],why:'o ângulo obtuso pedido pelo projeto',concept:'O que falta = ângulo total − ângulo já feito.'})},
+ ()=>{const i=R(45,65),a=R(10,30);return sub({title:'Catapulta',emoji:'🚀',text:`Na aula da Professora Andrea, o ângulo ideal de lançamento da catapulta é ${i}°. O braço da sua catapulta está inclinado em apenas ${a}°. Quantos graus a mais você precisa dar?`,total:i,parts:[a],why:'o ângulo ideal de lançamento',concept:'O que falta = ângulo ideal − ângulo atual.'})},
+ ()=>{const f=R(100,115),b=R(15,35);return sub({title:'Visão no Meta Quest VR',emoji:'🥽',text:`No headset de realidade virtual, seu campo de visão (FOV) é de ${f}°. Um menu flutuante bloqueia ${b}° dessa visão. Qual ângulo de visão ficou livre?`,total:f,parts:[b],why:'o campo de visão total',concept:'Parte livre = total − parte bloqueada.'})},
+ ()=>{const k=R(2,14);return sub({title:'Nivelando a impressora 3D',emoji:'🧊',text:`A mesa da impressora 3D deve ficar paralela à tela LCD, formando um ângulo raso (180°). O calibrador mostra ${180-k}°. Quantos graus faltam para nivelar?`,total:180,parts:[180-k],why:'um ângulo raso',concept:'Ângulos suplementares somam 180°.'})},
+ ()=>{const r=R(6,12);return sub({title:'Rampa de acessibilidade',emoji:'♿',text:`Uma rampa tem ${r}° de inclinação com o piso. Parede e piso formam um ângulo reto (90°). Qual é o ângulo complementar entre a rampa e a parede, no topo?`,total:90,parts:[r],why:'o ângulo reto entre parede e piso',concept:'No triângulo retângulo, os dois ângulos menores são complementares (somam 90°).'})},
+ ()=>{const m=R(140,160),s=R(40,70);return sub({title:'Garra do SPIKE Prime',emoji:'🦾',text:`A garra do SPIKE Prime abre até ${m}°. Para segurar o bloco da FLL, ela precisa fechar até ${s}°. Quantos graus o motor deve girar?`,total:m,parts:[s],why:'a abertura máxima da garra',concept:'Movimento = posição inicial − posição final.'})},
+ ()=>{const c=R(35,65);return sub({title:'Mapeamento com drone',emoji:'🛩️',text:`A câmera de um drone agrícola varre um ângulo raso (180°). Árvores altas criaram um ponto cego de ${c}°. Qual ângulo da plantação foi mapeado?`,total:180,parts:[c],why:'o ângulo raso da varredura',concept:'Ângulos suplementares somam 180°.'})},
+ ()=>{const a=R(30,70);return sub({title:'Painel solar',emoji:'☀️',text:`Ao meio-dia, as placas solares devem ficar a 90° da luz do sol. O motor já ergueu a placa ${a}°. Quantos graus ainda faltam?`,total:90,parts:[a],why:'o ângulo reto ideal',concept:'Ângulos complementares somam 90°.'})},
+ ()=>{const t=R(100,130);return sub({title:'Ergonomia no notebook',emoji:'💻',text:`A tela do notebook está a 90° do teclado. O ideal para estudar é ${t}°. Quantos graus você precisa deitar a tela?`,total:t,parts:[90],why:'a inclinação ideal da tela',concept:'Ajuste = ângulo ideal − ângulo atual.'})},
+ ()=>{const a=R(35,80),b=R(35,80);return sub({title:'Vela do veleiro',emoji:'⛵',text:`A vela triangular de um veleiro tem dois ângulos medindo ${a}° e ${b}°. Quanto mede o terceiro ângulo?`,total:180,parts:[a,b],why:'a soma dos ângulos internos de um triângulo',concept:'Os ângulos internos de um triângulo somam 180°.'})},
+ ()=>{const a=R(60,140),b=R(60,120);return sub({title:'Giro completo na OBR',emoji:'🧭',text:`Para escanear a sala de resgate, o robô dá uma volta completa em torno do próprio eixo. Ele já girou ${a}° e depois mais ${b}°. Quantos graus faltam?`,total:360,parts:[a,b],why:'uma volta completa',concept:'Uma volta completa mede 360°.'})},
+ ()=>{const h=R(1,6);return{title:'Relógio da sala',emoji:'🕒',text:`O relógio da sala marca exatamente ${h} hora${h>1?'s':''}. Qual é o ângulo entre o ponteiro das horas e o dos minutos?`,answer:30*h,concept:'Volta completa = 360° e o relógio tem 12 marcações.',diag:null,
+  steps:['O relógio é um círculo: uma volta completa mede <b>360°</b>.','Ele tem 12 números, então cada marcação vale 360° ÷ 12 = <b>30°</b>.',`Às ${h}h, o ponteiro dos minutos está no 12 e o das horas no ${h}: são <b>${h}</b> marcações.`,`${h} × 30° = <b>${30*h}°</b>.`]}},
+ ()=>{let x;do{x=R(30,150)}while(x===90);const opv=Math.random()<.5;
+  return opv?{title:'Cruzamento de ruas',emoji:'🚦',text:`Duas ruas retas se cruzam. Um dos ângulos do cruzamento mede ${x}°. Quanto mede o ângulo oposto a ele?`,answer:x,diag:null,concept:'Ângulos opostos pelo vértice (OPV) são sempre iguais.',
+   steps:['Quando duas retas se cruzam, os ângulos <b>opostos pelo vértice</b> (OPV) têm <b>a mesma medida</b>.',`O ângulo dado mede ${x}°.`,`Logo, o ângulo oposto também mede <b>${x}°</b>.`]}
+  :sub({title:'Cruzamento de ruas',emoji:'🚦',text:`Duas ruas retas se cruzam. Um dos ângulos do cruzamento mede ${x}°. Quanto mede o ângulo vizinho a ele, ao lado, sobre a mesma rua?`,total:180,parts:[x],why:'ângulos vizinhos sobre uma reta formam um ângulo raso',concept:'Ângulos vizinhos sobre uma reta são suplementares (somam 180°).'})}
+];
+
+/* Desenho do ângulo: partes conhecidas + parte desconhecida */
+function diagram(d,reveal){
+  if(!d)return'';
+  const tot=d.parts.reduce((s,x)=>s+x,0)+d.ans,full=tot>180,r=68,P=(a,k)=>[(100+k*Math.cos(a*Math.PI/180)).toFixed(1),((full?100:100)-k*Math.sin(a*Math.PI/180)).toFixed(1)];
+  let a0=0,o='';
+  d.parts.map((v,i)=>({v,c:'k'+(i%3)})).concat({v:d.ans,c:'u',u:1}).forEach(s=>{
+    const a1=a0+s.v,[x0,y0]=P(a0,r),[x1,y1]=P(a1,r),[tx,ty]=P((a0+a1)/2,r+17);
+    o+=`<path class="seg ${s.c}" d="M100 100L${x0} ${y0}A${r} ${r} 0 ${s.v>180?1:0} 0 ${x1} ${y1}Z"/><text x="${tx}" y="${ty}">${s.u&&!reveal?'?':s.v+'°'}</text>`;a0=a1});
+  return`<svg viewBox="${full?'0 0 200 200':'0 12 200 104'}" role="img" aria-label="Diagrama do ângulo">${o}</svg>`;
+}
+const stepsHTML=(m,reveal)=>`<ol class="steps">${m.steps.map((s,i)=>`<li style="animation-delay:${reveal?i*.5:0}s">${s}</li>`).join('')}</ol><div class="key">💡 Conceito-chave: ${m.concept}</div>`;
+const explainHTML=(m,reveal)=>(m.diag?`<div class="diagram">${diagram(m.diag,true)}</div>`:'')+stepsHTML(m,reveal);
+
+let queue,idx,results,m,tries,done;
+const show=id=>['menu','play','end'].forEach(s=>$(s).hidden=s!==id);
+const toggleModal=v=>$('modal').hidden=!v;
+
+function startGame(){queue=shuffle(TEMPLATES).slice(0,10);idx=0;results=[];show('play');load();window.scrollTo(0,0)}
+
+function load(){
+  m=queue[idx]();tries=0;done=false;
+  $('counter').textContent=`Missão ${idx+1} de ${queue.length}`;
+  $('prog').style.width=(idx/queue.length*100)+'%';
+  $('emoji').textContent=m.emoji;$('mtitle').textContent=m.title;$('story').textContent=m.text;
+  $('diag').innerHTML=diagram(m.diag,false);$('diag').hidden=!m.diag;
+  $('inp').value='';$('inp').disabled=false;$('go').disabled=false;
+  $('note').hidden=true;$('exp').hidden=true;
+  const el=$('mission');el.classList.remove('view');void el.offsetWidth;el.classList.add('view');
+  setTimeout(()=>$('inp').focus(),120);
+}
+
+function note(t,c){const n=$('note');n.className='note '+c;n.innerHTML=t;n.hidden=false;n.style.animation='none';void n.offsetWidth;n.style.animation=''}
+
+function check(){
+  if(done)return;
+  const v=$('inp').value.trim();
+  if(v===''){note('Digite um número em graus antes de confirmar.','warn');return}
+  const n=Number(v);tries++;
+  if(n===m.answer)return conclude(tries===1?'first':'help');
+  if(tries>=3)return conclude('revealed');
+  note(tries===1?`Quase! Tente um número ${n>m.answer?'menor':'maior'}.`:`Ainda não. 💡 ${m.concept} Última tentativa antes da resolução.`,'bad');
+  $('inp').value='';$('inp').focus();
+}
+
+function conclude(status){
+  done=true;results.push({m,status});
+  $('inp').disabled=true;$('go').disabled=true;$('note').hidden=true;
+  $('diag').hidden=true;
+  $('banner').className='banner '+status;
+  $('banner').textContent={first:'🎉 Correto de primeira!',help:'✅ Correto! Você chegou lá.',revealed:`A resposta era ${m.answer}°. Vamos entender o raciocínio:`}[status];
+  $('expBody').innerHTML=explainHTML(m,true);
+  $('next').textContent=idx+1<queue.length?'Próxima missão →':'Ver meu resultado →';
+  $('exp').hidden=false;$('exp').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function nextMission(){idx++;idx<queue.length?load():finishGame()}
+
+function finishGame(){
+  $('prog').style.width='100%';show('end');window.scrollTo(0,0);
+  const n=results.filter(r=>r.status==='first').length,t=results.length;
+  $('bigScore').textContent=`${n}/${t}`;
+  const [rk,sub]=n===t?['🏆 Mestre dos Ângulos','Perfeito! Todas de primeira.']:n>=7?['🏅 Explorador Avançado','Quase lá! Você domina a maioria dos conceitos.']:n>=4?['🚀 Em evolução','Bom caminho! Revise os conceitos abaixo e tente de novo.']:['🌱 Aprendiz','Sem pressa: leia as explicações e jogue outra vez. Os números vão mudar!'];
+  $('rank').textContent=rk;$('rankSub').textContent=`${sub} (acertos de primeira tentativa)`;
+  const cs=[...new Set(results.filter(r=>r.status!=='first').map(r=>r.m.concept))];
+  $('review').className='rev'+(cs.length?'':' good');
+  $('review').innerHTML=cs.length?cs.map(c=>'• '+c).join('<br>'):'🎉 Você acertou tudo de primeira. Nenhum conceito para revisar!';
+  const ic={first:'🟢',help:'🟡',revealed:'🔴'};
+  $('log').innerHTML=results.map(r=>`<details><summary>${ic[r.status]} ${r.m.emoji} ${r.m.title}<em>${r.m.answer}°</em></summary><div class="body"><p style="font-weight:700;margin:6px 0 10px">${r.m.text}</p>${explainHTML(r.m,false)}</div></details>`).join('');
+}
+
+$('inp').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();done?nextMission():check()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleModal(false)});
+</script>
+</body>
+</html>
